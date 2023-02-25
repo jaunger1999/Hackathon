@@ -15,8 +15,8 @@ using System.Windows.Forms;
 
 namespace Hackathon {
     static class Resolution {
-        //private const int RES_BASE_Y = 240, TILE_SIZE = 16;
-        private const int RES_BASE_Y = 1080, TILE_SIZE = 16;
+        private const int RES_BASE_Y = 720, TILE_SIZE = 16;
+        //private const int RES_BASE_Y = 720, TILE_SIZE = 16;
 
         public static Vector2 VirtualResolution { get; private set; }
         public static Vector2 WindowResolution => newViewportDims.ToVector2();
@@ -45,7 +45,8 @@ namespace Hackathon {
         }
 
         static Resolution() {
-            newViewportDims = screenResolution = new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            //newViewportDims = screenResolution = new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            newViewportDims = screenResolution = new Point(1280, 720);
 
             aspectRatio = screenAspectRatio = (float)screenResolution.X / screenResolution.Y;
         }
@@ -64,7 +65,7 @@ namespace Hackathon {
             DefaultTileWidth = vWidth / TILE_SIZE;
             DefaultTileHeight = vHeight / TILE_SIZE;
 
-            ToggleFullscreen(); //lazy
+            //ToggleFullscreen(); //lazy
         }
 
         public static Matrix GetTransformationMatrix() {

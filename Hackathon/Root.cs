@@ -8,6 +8,10 @@ namespace Hackathon {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private Obstacle obstacle;
+        private Ball ball;
+        Texture2D t;
+
         public Root() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -16,7 +20,10 @@ namespace Hackathon {
 
         protected override void Initialize() {
             // TODO: Add your initialization logic here
-
+            ProceduralTextures.SetGraphicsDevice(_graphics.GraphicsDevice);
+            ball = new Ball(20);
+            obstacle = new Obstacle(100, 5 * MathHelper.Pi / 4, 5.7f);
+            t = ProceduralTextures.CreateArc(100, 5 * MathHelper.Pi / 3, 5.7f);
             base.Initialize();
         }
 
@@ -43,10 +50,12 @@ namespace Hackathon {
             resMatrix = Resolution.GetTransformationMatrix();
 
             GraphicsDevice.Clear(Color.Gray);
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp,
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp,
                 transformMatrix: resMatrix * Camera.ViewMatrix);
 
             ParticleManager.Draw(_spriteBatch);
+            ball.Draw(_spriteBatch);
+            obstacle.Draw(_spriteBatch);
 
             _spriteBatch.End();
             base.Draw(gameTime);

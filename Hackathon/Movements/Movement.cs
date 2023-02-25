@@ -20,7 +20,7 @@ namespace Hackathon {
         private int steps;
         private bool calculated, diagonal, canMoveAlongObjects;
 
-        public Movement(Vector2 start, Vector2 end, bool canMoveAlongObjects = true) {
+        public Movement(Vector2 start, Vector2 end,, float some, bool canMoveAlongObjects = true) {
             this.canMoveAlongObjects = canMoveAlongObjects;
 
             startPosition = start;
@@ -30,6 +30,19 @@ namespace Hackathon {
             furthestAvailablePosition = start;
             CalculateSteps();
             diagonal = Velocity.X != 0 && Velocity.Y != 0;
+            Hit = HitX = HitY = calculated = false;
+        }
+
+        public Movement(Vector2 position, Vector2 velocity, bool canMoveAlongObjects = true) {
+            this.canMoveAlongObjects = canMoveAlongObjects;
+            Velocity = RemainingMovement = velocity;
+
+            startPosition = position;
+            endPosition = position + velocity;
+
+            furthestAvailablePosition = startPosition;
+            CalculateSteps();
+            diagonal = velocity.X != 0 && velocity.Y != 0;
             Hit = HitX = HitY = calculated = false;
         }
 

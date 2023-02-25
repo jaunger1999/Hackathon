@@ -8,12 +8,16 @@ namespace Hackathon {
     class GameObject {
         private Color color;
         private Vector2 position;
-        private Vector2 velocity;
 
         private Texture2D texture;
 
-        public GameObject() {
+        private float radius;
 
+        public GameObject(Texture2D texture, Color color, int radius) {
+            this.texture = texture;
+            this.radius = radius;
+
+            position = new Vector2(120, 120);
         }
 
         public virtual void Update(GameTime gameTime) {
@@ -21,7 +25,7 @@ namespace Hackathon {
         }
 
         public virtual void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(texture, position, color);
+            spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }
