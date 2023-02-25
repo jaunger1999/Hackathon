@@ -9,7 +9,7 @@ namespace Hackathon {
     /// These objects interact with obstacles and each other.
     /// </summary>
     abstract class CollisionObject : GameObject {
-        private static Vector2 gravity = new Vector2(0, 10);
+        private static Vector2 gravity = new Vector2(0,5);
 
         protected Vector2 Velocity { get; private set; }
 
@@ -31,6 +31,13 @@ namespace Hackathon {
         private void UpdatePosition(GameTime gameTime) {
             Movement m = NextMovement(gameTime);
             SetPosition(m.FurthestAvailablePosition());
+
+            if (m.HitY) {
+                Velocity *= Vector2.UnitX;
+            }
+            if (m.HitX) {
+                Velocity *= Vector2.UnitY;
+            }
         }
 
         protected abstract Movement NextMovement(GameTime gameTime);

@@ -21,26 +21,29 @@ namespace Hackathon {
         public static void Update(GameTime gameTime) {
             ball.Update(gameTime);
 
-            //UpdateObstacles();
+            UpdateObstacles(gameTime);
             CheckClickedObstacle();
         }
 
-        private static void UpdateObstacles() {
+        private static void UpdateObstacles(GameTime gameTime) {
             for (int i = 0; i < Obstacles.Count; i++) {
                 Obstacles[i].AddToRotation(Input.RotChange);
+                Obstacles[i].Update(gameTime);
             }
         }
 
         private static void CheckClickedObstacle() {
             if (Input.LeftMousePressed()) {
                 if (heldObstacle == null) {
-                    for (int i = 0; i < Obstacles.Count; i++) {
+                    for (int i = 0; i < Obstacles.Count && heldObstacle == null; i++) {
                         if (Obstacles[i].PointOnGrab(Input.MousePosition.ToVector2())) {
                             heldObstacle = Obstacles[i];
+                            heldObstacle.GrabToggle();
                         }
                     }
                 }
                 else {
+                    heldObstacle.GrabToggle();
                     heldObstacle = null;
                 }
             }

@@ -46,7 +46,7 @@ namespace Hackathon {
             resMatrix = Resolution.GetTransformationMatrix();
 
             GraphicsDevice.Clear(Color.Gray);
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.LinearClamp,
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.LinearClamp,
                 transformMatrix: resMatrix * Camera.ViewMatrix);
 
             ParticleManager.Draw(_spriteBatch);
