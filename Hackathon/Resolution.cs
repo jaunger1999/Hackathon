@@ -47,6 +47,9 @@ namespace Hackathon {
         static Resolution() {
             //newViewportDims = screenResolution = new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             newViewportDims = screenResolution = new Point(1280, 720);
+            Input.SetResolution(newViewportDims.X, newViewportDims.Y);
+            Input.SetAspectRatio((float)newViewportDims.X / newViewportDims.Y);
+            Input.SetScreenResolution(screenResolution.X, screenResolution.Y);
 
             aspectRatio = screenAspectRatio = (float)screenResolution.X / screenResolution.Y;
         }
@@ -92,7 +95,7 @@ namespace Hackathon {
             
             aspectRatio = (float)width / height;
             
-            //Input.SetActualResolution(width, height);
+            Input.SetActualResolution(width, height);
             ApplyResolutionSettings();
         }
 
@@ -105,7 +108,7 @@ namespace Hackathon {
 
             dirtyMatrix = true;
 
-            SetGameDims();
+            Input.SetVirtualResolution(vWidth, vHeight);
         }
 
         private static void ApplyResolutionSettings() {
@@ -163,8 +166,8 @@ namespace Hackathon {
 
         private static void SetNewViewportDims(int width, int height) {
             newViewportDims = new Point(width, height);
-            //Input.SetAspectRatio((float)newViewportDims.X / newViewportDims.Y);
-            //Input.SetResolution(newViewportDims.X, newViewportDims.Y);
+            Input.SetAspectRatio((float)newViewportDims.X / newViewportDims.Y);
+            Input.SetResolution(newViewportDims.X, newViewportDims.Y);
         }
 
         private static void CalculateNewViewport() {
@@ -176,11 +179,11 @@ namespace Hackathon {
             
             if (fullscreen) { //calculate dimensions that don't stretch the viewport.
                 CalculateFullscreenViewportDims();
-                //Input.SetFullscreen(true);
+                Input.SetFullscreen(true);
             }
             else {
                 SetResolution(newViewportDims.X, newViewportDims.Y, false);
-                //Input.SetFullscreen(false);
+                Input.SetFullscreen(false);
             }
         }
 

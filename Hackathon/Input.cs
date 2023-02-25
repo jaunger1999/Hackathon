@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace Inputs {
+namespace Hackathon {
     public enum CheatInput { Up, Down, Left, Right, A, B }
 
     /// <summary>
@@ -13,15 +13,15 @@ namespace Inputs {
         #region Constants
         private static readonly float deadzone = .05f, //deadzones for the analog sticks
             crouchDeadzone = 0.25f,
-            scrollWheelMin = .5f, 
-            scrollWheelMax = 1, 
-            scrollWheelDivisor = 2000; //max and min scroll wheel values.
+            scrollWheelMin = .001f, 
+            scrollWheelMax = 0.01f, 
+            scrollWheelDivisor = 120000; //max and min scroll wheel values.
         #endregion
 
         #region Variables
         public static Point OldMousePosition { get; private set; }
         public static Point MousePosition { get; private set; }
-
+        public static float RotChange { get; private set; }
 
         private static KeyboardState keyB, oldKeyB;
         private static GamePadState actualGameP, oldActualGameP, gameP, oldGameP;
@@ -170,7 +170,7 @@ namespace Inputs {
             return pressing;
         }
 
-        private static bool LeftMousePressed() {
+        public static bool LeftMousePressed() {
             return oldMouse.LeftButton == ButtonState.Released && LeftMousePressing();
         }
 
@@ -411,335 +411,6 @@ namespace Inputs {
         }
         #endregion
 
-        #region Game Inputs
-        /// <summary>
-        /// returns true for all inputs that are equal to the player going left
-        /// </summary>
-        /// <returns></returns>
-        public static bool Left() {
-            return Pressing(Keys.Left) || Pressing(Keys.A) || 
-                Pressing(Buttons.DPadLeft);
-        }
-
-        /// <summary>
-        /// returns true for all inputs that are equal to the player going right
-        /// </summary>
-        /// <returns></returns>
-        public static bool Right() {
-            return Pressing(Keys.Right) || Pressing(Keys.D) || 
-                Pressing(Buttons.DPadRight);
-        }
-
-        /// <summary>
-        /// returns true for all inputs that are equal to the player going up
-        /// </summary>
-        /// <returns></returns>
-        public static bool Up() {
-            return Pressing(Keys.Up) || Pressing(Keys.W) || 
-                Pressing(Buttons.DPadUp);
-        }
-
-        /// <summary>
-        /// returns true for all inputs that are equal to the player going down
-        /// </summary>
-        /// <returns></returns>
-        public static bool Down() {
-            return Pressing(Keys.Down) || Pressing(Keys.S) ||
-                Pressing(Buttons.DPadDown);
-        }
-
-        public static bool Crouch() {
-            return LeftAnalogY() > 0;
-        }
-
-        /// <summary>
-        /// Attach to a rope or wall.
-        /// </summary>
-        /// <returns></returns>
-        public static bool AttachToClimbableObject() {
-            return Pressed(Keys.W) || Pressed(Keys.Up);
-        }
-
-        /// <summary>
-        /// Create something the player can climb like a chain.
-        /// </summary>
-        /// <returns></returns>
-        public static bool CreateClimbableObject() {
-            return Pressed(Keys.E);
-        }
-
-        /// <summary>
-        /// Place an explosive.
-        /// </summary>
-        /// <returns></returns>
-        public static bool UseExplosive() {
-            return Pressed(Keys.Q);
-        }
-
-        /// <summary>
-        /// The start button.
-        /// </summary>
-        /// <returns></returns>
-        public static bool Start() {
-            return ActuallyPressed(Keys.Enter) || ActuallyPressed(Buttons.Start);
-        }
-
-        /// <summary>
-        /// The back key used for exiting out of the game.
-        /// </summary>
-        /// <returns></returns>
-        public static bool Back() {
-            return Pressed(Keys.Escape) || Pressed(Buttons.Back);
-        }
-
-        /// <summary>
-        /// Different buttons for pause and back. (hence the distinction)
-        /// </summary>
-        /// <returns></returns>
-        public static bool Pause() {
-            return ActuallyPressed(Keys.Escape) || ActuallyPressed(Buttons.Start);
-        }
-
-        /// <summary>
-        /// Returns true if A was pressed once.
-        /// </summary>
-        /// <returns></returns>
-        public static bool Select() {
-            return LeftMousePressed() || Pressed(Keys.Space) || Pressed(Buttons.A);
-        }
-
-        /// <summary>
-        /// Returns true if B was pressed once.
-        /// </summary>
-        /// <returns></returns>
-        public static bool Cancel() {
-            return Pressed(Keys.LeftShift) || Pressed(Buttons.B);
-        }
-
-        public static bool Grab() {
-            return Pressing(grabButton);
-        }
-
-        public static bool GrabPressed() {
-            return Pressed(grabButton);
-        }
-
-        public static bool GrabReleased() {
-            return Released(grabButton);
-        }
-
-        public static bool Jump() {
-            return Pressed(Buttons.A) || Pressed(Keys.Space);
-        }
-
-        public static bool Run() {
-            return Pressing(Buttons.X) || Pressing(Keys.LeftShift);
-        }
-
-        public static bool JumpReleased() {
-            return NotHeld(Buttons.A) && NotHeld(Keys.Space);
-        }
-
-        public static bool RTPressed() {
-            return Pressed(Buttons.RightTrigger);
-        }
-
-        public static bool LTPressed() {
-            return Pressed(Buttons.LeftTrigger);
-        }
-
-        public static bool SelectRight() {
-            return Pressing(Buttons.RightShoulder);
-        }
-
-        public static bool SelectLeft() {
-            return Pressed(Buttons.LeftShoulder);
-        }
-
-        /// <summary>
-        /// Still crouching or crouch walking.
-        /// </summary>
-        /// <returns></returns>
-        public static bool Crouching() {
-            const float INTERVAL = MathHelper.PiOver4;
-
-            float theta = LeftAnalogAngle();
-            bool crouchAngle = theta > MathHelper.PiOver2 - INTERVAL && theta < MathHelper.PiOver2 + INTERVAL;
-
-            return (LeftAnalogLength() > crouchDeadzone && crouchAngle) || Pressing(Keys.S) || Pressing(Keys.Down);
-        }
-
-        public static bool Slowdown() {
-            return Pressed(Buttons.X);
-        }
-
-        public static bool ActivateHandItem() {
-            return Pressed(Keys.LeftControl);
-        }
-
-        public static bool ActivateBackItem() {
-            return Pressed(Keys.E);
-        }
-
-        /// <summary>
-        /// Move Hand item to or from back.
-        /// </summary>
-        /// <returns></returns>
-        public static bool ToggleHandItemPosition() {
-            return Pressed(Keys.E);
-        }
-                
-        public static Vector2 NewMovementDir() {
-            const float INTERVAL = MathHelper.PiOver4;
-
-            Vector2 v = Vector2.Zero;
-            float x = LeftAnalog().X, theta = LeftAnalogAngle();
-
-            if (LeftAnalogLength() > deadzone) {
-                if (theta > MathHelper.TwoPi - INTERVAL || theta < INTERVAL ||
-                    (theta < MathHelper.Pi + INTERVAL && theta > MathHelper.Pi - INTERVAL)) {
-                    v = new Vector2(Math.Sign(x) * MathHelper.Lerp(deadzone, 1, Math.Abs(x)), 0);
-                }
-            }
-            else if (Left()) {
-                v = -Vector2.UnitX;
-            }
-            else if (Right()) {
-                v = Vector2.UnitX;
-            }
-
-            return v;
-        }
-
-        public static Vector2 JetpackMovementVector() {
-            Vector2 movementVector = Vector2.Zero;
-
-            if (LeftAnalogLength() > deadzone) {
-                movementVector = Vector2.Transform(Vector2.UnitX, Quaternion.CreateFromYawPitchRoll(0, 0, LeftAnalogAngle()));
-            }
-
-            return movementVector;
-        }
-
-        public static bool Aiming() {
-            const float AIM_DEADZONE = 0.5f;
-
-            return RightAnalogLength() > AIM_DEADZONE;
-        }
-
-        public static bool Moving() {
-            return LeftAnalogLength() > deadzone;
-        }
-        #endregion
-
-        #region Cheat Inputs
-        /// <summary>
-        /// returns true for all inputs that are equal to the player going left
-        /// </summary>
-        /// <returns></returns>
-        public static bool LeftPressed() {
-            bool pressed = Pressed(Keys.Left) || Pressed(Keys.A) ||
-                Pressed(Buttons.DPadLeft);
-
-            if (pressed) {
-                cheatInput = CheatInput.Left;
-            }
-
-            return pressed;
-        }
-
-        /// <summary>
-        /// returns true for all inputs that are equal to the player going right
-        /// </summary>
-        /// <returns></returns>
-        public static bool RightPressed() {
-            bool pressed = Pressed(Keys.Right) || Pressed(Keys.D) ||
-               Pressed(Buttons.DPadRight);
-
-            if (pressed) {
-                cheatInput = CheatInput.Right;
-            }
-
-            return pressed;
-        }
-
-        /// <summary>
-        /// returns true for all inputs that are equal to the player going up
-        /// </summary>
-        /// <returns></returns>
-        public static bool UpPressed() {
-            bool pressed = Pressed(Keys.Up) || Pressed(Keys.W) ||
-                Pressed(Buttons.DPadUp);
-
-            if (pressed) {
-                cheatInput = CheatInput.Up;
-            }
-
-            return pressed;
-        }
-
-        /// <summary>
-        /// returns true for all inputs that are equal to the player going down
-        /// </summary>
-        /// <returns></returns>
-        public static bool DownPressed() {
-            bool pressed = Pressed(Keys.Down) || Pressed(Keys.S) ||
-                Pressed(Buttons.DPadDown);
-
-            if (pressed) {
-                cheatInput = CheatInput.Down;
-            }
-
-            return pressed;
-        }
-
-        /// <summary>
-        /// Returns true if A was pressed once.
-        /// </summary>
-        /// <returns></returns>
-        public static bool APressedCheat() {
-            bool pressed = Select();
-
-            if (pressed) {
-                cheatInput = CheatInput.A;
-            }
-
-            return pressed;
-        }
-
-        /// <summary>
-        /// Returns true if B was pressed once.
-        /// </summary>
-        /// <returns></returns>
-        public static bool BPressedCheat() {
-            bool pressed = Cancel();
-
-            if (pressed) {
-                cheatInput = CheatInput.B;
-            }
-
-            return pressed;
-        }
-
-        /// <summary>
-        /// Returns true if one of the cheat related buttons were pressed.
-        /// </summary>
-        /// <returns></returns>
-        public static bool NewCheatInput() {
-            return UpPressed() || DownPressed() ||
-                LeftPressed() || RightPressed() ||
-                APressedCheat() || BPressedCheat();
-        }
-
-        /// <summary>
-        /// Returns the last cheat button pressed.
-        /// </summary>
-        /// <returns></returns>
-        public static CheatInput CurrentCheatInput() {
-            return cheatInput;
-        }
-        #endregion
-
         #region Volume
         /// <summary>
         /// When the plus key is pressed.
@@ -832,32 +503,6 @@ namespace Inputs {
         }
         #endregion
 
-        #region Menu Inputs
-        /// <summary>
-        /// What makes us select the menu item above.
-        /// </summary>
-        /// <returns></returns>
-        public static bool MenuUp() {
-            return UpPressed();
-        }
-
-        /// <summary>
-        /// What makes us select the menu item above.
-        /// </summary>
-        /// <returns></returns>
-        public static bool MenuDown() {
-            return DownPressed();
-        }
-
-        /// <summary>
-        /// Return true if we're using this menu item.
-        /// </summary>
-        /// <returns></returns>
-        public static bool UseMenuItem() {
-            return Select() || Start();
-        }
-        #endregion
-
         #region Update
         /// <summary>
         /// Updates the keyB at the beginning of the update loop.
@@ -874,10 +519,15 @@ namespace Inputs {
         /// Updates the keyB at the beginning of the update loop.
         /// </summary>
         public static void Update() {
+            
+
             UpdateStates();
 
             UpdateMousePosition();
             UpdateScrollWheel();
+
+            RotChange = (mouse.X - oldMouse.X) * scrollWheel;
+
             UpdateTriggers();
         }
 

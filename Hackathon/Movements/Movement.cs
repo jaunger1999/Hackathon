@@ -15,19 +15,21 @@ namespace Hackathon {
         protected Vector2 Velocity { get; private set; }
         public Vector2 RemainingMovement { get; private set; }
 
-        private Vector2 oneStep, nextStep, nextIncrement, furthestAvailablePosition, startPosition, endPosition;
+        private Vector2 oneStep, nextStep, nextIncrement, startPosition, endPosition;
         
+        protected Vector2 furthestPosition { get; private set; }
+
         private int steps;
         private bool calculated, diagonal, canMoveAlongObjects;
 
-        public Movement(Vector2 start, Vector2 end,, float some, bool canMoveAlongObjects = true) {
+        public Movement(Vector2 start, Vector2 end, float some, bool canMoveAlongObjects = true) {
             this.canMoveAlongObjects = canMoveAlongObjects;
 
             startPosition = start;
             endPosition = end;
             Velocity = RemainingMovement = end - start;
 
-            furthestAvailablePosition = start;
+            furthestPosition = start;
             CalculateSteps();
             diagonal = Velocity.X != 0 && Velocity.Y != 0;
             Hit = HitX = HitY = calculated = false;
@@ -40,7 +42,7 @@ namespace Hackathon {
             startPosition = position;
             endPosition = position + velocity;
 
-            furthestAvailablePosition = startPosition;
+            furthestPosition = startPosition;
             CalculateSteps();
             diagonal = velocity.X != 0 && velocity.Y != 0;
             Hit = HitX = HitY = calculated = false;
@@ -65,7 +67,7 @@ namespace Hackathon {
                 calculated = true;
             }
 
-            return furthestAvailablePosition;
+            return furthestPosition;
         }
 
         /// <summary>
@@ -73,7 +75,7 @@ namespace Hackathon {
         /// </summary>
         /// <param name="newHS"></param>
         /// <returns></returns>
-        protected abstract bool Collision();
+        protected abstract bool Collision(Vector2 position);
 
         /// <summary>
         /// Check which type of secondary movement to calculate between
@@ -97,9 +99,9 @@ namespace Hackathon {
         private Vector2 ValidNonDiagonalMovement() {
             Vector2 xInc = new Vector2(oneStep.X, 0),
                 yInc = new Vector2(0, oneStep.Y),
-                nextXStep = furthestAvailablePosition + xInc,
-                nextYStep = furthestAvailablePosition + yInc,
-                localNextStep = furthestAvailablePosition;
+                nextXStep = furthestPosition + xInc,
+                nextYStep = furthestPosition + yInc,
+                localNextStep = furthestPosition;
 
             bool xCollision = CollisionAtNextStep(ref nextXStep),
                 yCollision = CollisionAtNextStep(ref nextYStep);
@@ -118,7 +120,7 @@ namespace Hackathon {
         /// <returns></returns>
         private bool CollisionAtNextStep(ref Vector2 nextStep) {
             //trialHS = hS.CloneAt(nextStep);
-            bool collision = Collision();
+            bool collision = Collision(nextStep);
 
             if (!collision) {
                 //trialHS = hS.CloneAt(nextStep);
@@ -147,14 +149,14 @@ namespace Hackathon {
                 //PrevHS = newHS;
 
                 if (!hitSomething) {
-                    nextStep = furthestAvailablePosition + oneStep;
+                    nextStep = furthestPosition + oneStep;
                     nextIncrement = oneStep;
                     hitSomething = CollisionAtNextStep(ref nextStep);
 
                     if (!hitSomething) {
                         //newHS = trialHS;
                         RemainingMovement -= nextIncrement;
-                        furthestAvailablePosition = nextStep;
+                        furthestPosition = nextStep;
                     }
                 }
 
@@ -162,12 +164,12 @@ namespace Hackathon {
                     nextStep = ValidSecondaryMovement();
 
                     //If we didn't move there's no need to keep checking.
-                    performSecondaryCheck = furthestAvailablePosition != nextStep;
+                    performSecondaryCheck = furthestPosition != nextStep;
 
                     if (performSecondaryCheck) {
                         //newHS = trialHS;
                         RemainingMovement -= nextIncrement;
-                        furthestAvailablePosition = nextStep;
+                        furthestPosition = nextStep;
                     }
                 }
             }

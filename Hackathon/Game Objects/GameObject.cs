@@ -5,27 +5,42 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Hackathon {
-    class GameObject {
-        private Color color;
-        private Vector2 position;
+    abstract class GameObject {
+        public Vector2 Position { get; private set; }
 
+        private Vector2 origin;
         private Texture2D texture;
 
-        private float radius;
+        public float Rotation { get; private set; }
+        public float Depth { get; private set; }
+        public float Radius { get; private set; }
+        public float RadiusSquared { get; private set; }
+
+        private Color color;
 
         public GameObject(Texture2D texture, Color color, int radius) {
             this.texture = texture;
-            this.radius = radius;
+            this.Radius = radius;
+            this.color = color;
 
-            position = new Vector2(120, 120);
+            origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            RadiusSquared = Radius * Radius;
+            Depth = 0;
         }
 
         public virtual void Update(GameTime gameTime) {
 
         }
+        public void AddToRotation(float delta) {
+            Rotation += delta;
+        }
+
+        public void SetPosition(Vector2 position) {
+            Position = position;
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, Position, null, color, Rotation, origin, 1, SpriteEffects.None, Depth);
         }
     }
 }
