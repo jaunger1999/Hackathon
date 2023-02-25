@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Hackathon {
     abstract class GameObject {
+        public Vector2 OldPosition { get; private set; }
         public Vector2 Position { get; private set; }
 
         private Vector2 origin;
@@ -31,6 +32,11 @@ namespace Hackathon {
         public virtual void Update(GameTime gameTime) {
 
         }
+
+        public virtual void OldUpdate() {
+            OldPosition = Position;
+        }
+
         public void AddToRotation(float delta) {
             Rotation += delta;
         }

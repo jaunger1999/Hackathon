@@ -17,7 +17,7 @@ namespace Hackathon {
         }
 
         protected override Movement NextMovement(GameTime gameTime) {
-            return new BallMovement(Position, Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, Radius);
+            return new BallMovement(this, Position, Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds, Radius);
         }
     }
 }

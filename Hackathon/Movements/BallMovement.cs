@@ -8,7 +8,7 @@ namespace Hackathon {
     class BallMovement : Movement {
         private float radius;
 
-        public BallMovement(Vector2 position, Vector2 velocity, float radius) : base(position, velocity) {
+        public BallMovement(CollisionObject obj, Vector2 position, Vector2 velocity, float radius) : base(obj, position, velocity) {
             this.radius = radius;
         }
 
@@ -17,27 +17,32 @@ namespace Hackathon {
             bool collision = false;
 
             for (int i = 0; i < o.Count && !collision; i++) {
-                float length = (o[i].Position - position).Length(), thetaOne = float.MaxValue, thetaTwo = float.MinValue;
-                IntersectionPoints(position, o[i].Position, o[i].Radius, out Vector2 one, out Vector2 two);
+                if (o[i].Active()) {
+                    float length = (o[i].Position - position).Length(), thetaOne = float.MaxValue, thetaTwo = float.MinValue;
+                    IntersectionPoints(position, o[i].Position, o[i].Radius, out Vector2 one, out Vector2 two);
 
-                if (!float.IsNaN(one.X)) {
-                    Vector2 t = one - o[i].Position, t2 = two - o[i].Position;
+                    if (!float.IsNaN(one.X)) {
+                        Vector2 t = one - o[i].Position, t2 = two - o[i].Position;
 
-                    thetaOne = (float)(Math.Atan2(t.Y, t.X) + MathHelper.TwoPi) % MathHelper.TwoPi;
-                    thetaTwo = (float)(Math.Atan2(t2.Y, t2.X) + MathHelper.TwoPi) % MathHelper.TwoPi;
+                        thetaOne = (float)(Math.Atan2(t.Y, t.X) + MathHelper.TwoPi) % MathHelper.TwoPi;
+                        thetaTwo = (float)(Math.Atan2(t2.Y, t2.X) + MathHelper.TwoPi) % MathHelper.TwoPi;
+                    }
+
+                    //complete circle collision.
+                    //collision = length < (o[i].Radius + radius) && //outside collision
+                    //length > Math.Abs(o[i].Radius - radius); //inside collision
+
+                    //arc collision
+
+                    for (int j = -1; j <= 1 && !collision; j++) {
+                        collision = (thetaOne > o[i].MinRadians + j * MathHelper.TwoPi && thetaOne < o[i].MaxRadians + j * MathHelper.TwoPi) ||
+                            (thetaTwo > o[i].MinRadians + j * MathHelper.TwoPi && thetaTwo < o[i].MaxRadians + j * MathHelper.TwoPi);
+                    }
+
+                    if (collision) {
+                        o[i].AddCollisionObj(Obj);
+                    }
                 }
-
-                //complete circle collision.
-                //collision = length < (o[i].Radius + radius) && //outside collision
-                //length > Math.Abs(o[i].Radius - radius); //inside collision
-
-                //arc collision
-
-                for (int j = -1; j <= 1 && !collision; j++) {
-                    collision = (thetaOne > o[i].MinRadians + j * MathHelper.TwoPi && thetaOne < o[i].MaxRadians + j * MathHelper.TwoPi) ||
-                        (thetaTwo > o[i].MinRadians + j * MathHelper.TwoPi && thetaTwo < o[i].MaxRadians + j * MathHelper.TwoPi);
-                }
-
             }
 
                 return collision;

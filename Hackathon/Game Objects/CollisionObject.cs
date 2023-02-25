@@ -21,6 +21,10 @@ namespace Hackathon {
 
         }
 
+        public void AddVelocity(Vector2 v) {
+            Velocity += v;
+        }
+
         public override void Update(GameTime gameTime) {
             Velocity += gravity;
 

@@ -11,7 +11,7 @@ namespace Hackathon {
         public bool Hit { get; private set; }
         public bool HitX { get; private set; }
         public bool HitY { get; private set; }
-
+        protected CollisionObject Obj { get; private set; }
         protected Vector2 Velocity { get; private set; }
         public Vector2 RemainingMovement { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Hackathon {
         private int steps;
         private bool calculated, diagonal, canMoveAlongObjects;
 
-        public Movement(Vector2 start, Vector2 end, float some, bool canMoveAlongObjects = true) {
+        public Movement(CollisionObject obj, Vector2 start, Vector2 end, float some, bool canMoveAlongObjects = true) {
             this.canMoveAlongObjects = canMoveAlongObjects;
 
             startPosition = start;
@@ -35,8 +35,9 @@ namespace Hackathon {
             Hit = HitX = HitY = calculated = false;
         }
 
-        public Movement(Vector2 position, Vector2 velocity, bool canMoveAlongObjects = true) {
+        public Movement(CollisionObject obj, Vector2 position, Vector2 velocity, bool canMoveAlongObjects = true) {
             this.canMoveAlongObjects = canMoveAlongObjects;
+            Obj = obj;
             Velocity = RemainingMovement = velocity;
 
             startPosition = position;

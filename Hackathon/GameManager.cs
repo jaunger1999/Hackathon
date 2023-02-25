@@ -8,7 +8,7 @@ namespace Hackathon {
 
         private static Ball ball = new Ball(20);
 
-        private static Obstacle heldObstacle;
+        public static Obstacle HeldObstacle { get; private set; }
 
         public static void AddObstacle(Obstacle obstacle) {
             if (Obstacles == null) {
@@ -18,11 +18,16 @@ namespace Hackathon {
             Obstacles.Add(obstacle);
         }
 
+        public static bool Collision(GameObject obj) {
+            return false;
+        }
+
         public static void Update(GameTime gameTime) {
             ball.Update(gameTime);
 
-            UpdateObstacles(gameTime);
             CheckClickedObstacle();
+            UpdateObstacles(gameTime);
+            OldUpdateObstacles();
         }
 
         private static void UpdateObstacles(GameTime gameTime) {
@@ -34,21 +39,27 @@ namespace Hackathon {
 
         private static void CheckClickedObstacle() {
             if (Input.LeftMousePressed()) {
-                if (heldObstacle == null) {
-                    for (int i = 0; i < Obstacles.Count && heldObstacle == null; i++) {
+                if (HeldObstacle == null) {
+                    for (int i = 0; i < Obstacles.Count && HeldObstacle == null; i++) {
                         if (Obstacles[i].PointOnGrab(Input.MousePosition.ToVector2())) {
-                            heldObstacle = Obstacles[i];
-                            heldObstacle.GrabToggle();
+                            HeldObstacle = Obstacles[i];
+                            HeldObstacle.GrabToggle();
                         }
                     }
                 }
                 else {
-                    heldObstacle.GrabToggle();
-                    heldObstacle = null;
+                    HeldObstacle.GrabToggle();
+                    HeldObstacle = null;
                 }
             }
 
-            heldObstacle?.SetPosition(Input.MousePosition.ToVector2());
+            HeldObstacle?.SetPosition(Input.MousePosition.ToVector2());
+        }
+
+        private static void OldUpdateObstacles() {
+            for (int i = 0; i < Obstacles.Count; i++) {
+                Obstacles[i].OldUpdate();
+            }
         }
 
         public static void Draw(SpriteBatch spriteBatch) {
