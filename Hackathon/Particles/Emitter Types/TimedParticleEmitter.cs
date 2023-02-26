@@ -6,7 +6,7 @@ namespace Particles {
     /// <summary>
     /// This emitter spawns timed particles.
     /// </summary>
-    class TimedParticleEmitter : Emitter {
+    /*class TimedParticleEmitter : Emitter {
         #region Variables
         private double secondsMin, secondsMax;
         private float coDrag, speedMin, speedMax;
@@ -78,5 +78,5 @@ namespace Particles {
 
         }
         #endregion
-    }
+    }*/
 }

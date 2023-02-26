@@ -14,7 +14,7 @@ namespace Hackathon {
         private static readonly float deadzone = .05f, //deadzones for the analog sticks
             crouchDeadzone = 0.25f,
             scrollWheelMin = .001f, 
-            scrollWheelMax = 0.01f, 
+            scrollWheelMax = 0.01f,
             scrollWheelDivisor = 120000; //max and min scroll wheel values.
         #endregion
 

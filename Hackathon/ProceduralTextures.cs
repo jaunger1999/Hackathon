@@ -30,6 +30,30 @@ namespace Hackathon {
             return texture;
         }
 
+        public static Texture2D CreateCircle(int radius, Color color) {
+            int diameter = radius * 2;
+            int rSquared = radius * radius;
+            Texture2D texture = new Texture2D(device, diameter, diameter);
+            Color[] colorData = new Color[diameter * diameter];
+
+
+            for (int x = 0; x < diameter; x++) {
+                for (int y = 0; y < diameter; y++) {
+                    int index = x + diameter * y;
+                    Vector2 pos = new Vector2(x - radius, y - radius);
+                    if (pos.LengthSquared() <= rSquared) { //length squared saves a square root operation.
+                        colorData[index] = color;
+                    }
+                    else {
+                        colorData[index] = Color.Transparent;
+                    }
+                }
+            }
+
+            texture.SetData(colorData);
+            return texture;
+        }
+
         public static Texture2D CreateCircle(int radius) {
             int diameter = radius * 2;
             int rSquared = radius * radius;

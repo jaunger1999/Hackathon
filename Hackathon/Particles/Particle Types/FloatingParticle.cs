@@ -1,6 +1,7 @@
 ﻿using Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Sprites;
 using System;
 
 namespace Particles {
@@ -14,8 +15,9 @@ namespace Particles {
         #endregion
 
         #region Constructor & Initialization
-        public FloatingParticle(Texture2D texture, Vector2 position) : base(texture, position) {
-
+        public FloatingParticle(Texture2D texture, Vector2 position, int speed = 100) : base(new Sprite(texture), position) {
+            Random r = new Random();
+            this.velocity = new Vector2(r.Next(-speed, speed), r.Next(-speed, speed));
         }
         #endregion
 
@@ -26,7 +28,7 @@ namespace Particles {
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime) {
             Offset(gameTime, velocity);
-            Accelerate(gameTime, Physics.Drag(coDrag, velocity));
+            //Accelerate(gameTime, velocity);
         }
 
         /// <summary>

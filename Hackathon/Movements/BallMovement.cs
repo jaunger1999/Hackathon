@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Particles;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,7 +14,8 @@ namespace Hackathon {
         }
 
         protected override bool Collision(Vector2 position) {
-            List<Obstacle> o = GameManager.Obstacles;
+            List<ArcObstacle> o = GameManager.ArcObstacles;
+            List<CircleObstacle> c = GameManager.CircleObstacles;
             bool collision = false;
 
             for (int i = 0; i < o.Count && !collision; i++) {
@@ -41,11 +43,25 @@ namespace Hackathon {
 
                     if (collision) {
                         o[i].AddCollisionObj(Obj);
+                        Obj.MirrorVelocity(o[i].Position);
                     }
                 }
             }
 
-                return collision;
+            for (int i = 0; i < c.Count && !collision; i++) {
+                collision = c[i].Active() && (position - c[i].Position).Length() < radius + c[i].Radius;
+
+                if (collision) {
+                    Obj.MirrorVelocity(c[i].Position);
+                }
+            }
+
+            if (collision) {
+                GameManager.IncScore();
+                ParticleManager.AddEmitter(new FadingParticleEmitter(ProceduralTextures.CreateCircle(4, Color.LightBlue), Obj.Position, 10, 5, 10));
+            }
+
+            return collision;
         }
 
         /// <summary>

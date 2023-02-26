@@ -35,3 +35,4 @@ C:\Users\jaung\source\repos\Hackathon\Hackathon\obj\Debug\netcoreapp3.1\Hackatho
 C:\Users\jaung\source\repos\Hackathon\Hackathon\obj\Debug\netcoreapp3.1\Hackathon.dll
 C:\Users\jaung\source\repos\Hackathon\Hackathon\obj\Debug\netcoreapp3.1\Hackathon.pdb
 C:\Users\jaung\source\repos\Hackathon\Hackathon\obj\Debug\netcoreapp3.1\Hackathon.genruntimeconfig.cache
+C:\Users\jaung\source\repos\Hackathon\Hackathon\bin\Debug\netcoreapp3.1\Content\File.xnb

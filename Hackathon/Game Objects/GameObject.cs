@@ -13,6 +13,7 @@ namespace Hackathon {
         private Texture2D texture;
 
         public float Rotation { get; private set; }
+        public float OldRotation { get; private set; }
         public float Depth { get; private set; }
         public float Radius { get; private set; }
         public float RadiusSquared { get; private set; }
@@ -35,6 +36,7 @@ namespace Hackathon {
 
         public virtual void OldUpdate() {
             OldPosition = Position;
+            OldRotation = Rotation;
         }
 
         public void AddToRotation(float delta) {

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 
 namespace Particles {
-    class AnimatedParticleEmitter : Emitter {
+    /*class AnimatedParticleEmitter : Emitter {
         #region Constants
 
         #endregion
@@ -37,5 +37,5 @@ namespace Particles {
             }
         }
         #endregion
-    }
+    }*/
 }

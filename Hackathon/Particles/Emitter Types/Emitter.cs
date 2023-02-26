@@ -38,6 +38,20 @@ namespace Particles {
         #endregion
 
         #region Constructor & Initialization
+        static Emitter() {
+            Rand = new Random();
+        }
+
+        public Emitter(Texture2D tex, Vector2 pos, double spawnFreq, int min, int max) {
+            Position = pos;
+            SpawnMin = min;
+            SpawnMax = max;
+            Texture = new Texture2D[] { tex };
+            spawnFrequency = spawnFreq;
+            particles = new List<Particle>();
+            AddParticles();
+        }
+
         /// <summary>
         /// Set the random pointer.
         /// </summary>
@@ -65,7 +79,8 @@ namespace Particles {
 
             if (!Expired) {
                 if (CanAddMore && seconds % spawnFrequency < elapsedSeconds) {
-                    AddParticles();
+                    //AddParticles();
+                    cancelled = true;
                 }
 
                 lifespan?.Update(gameTime);

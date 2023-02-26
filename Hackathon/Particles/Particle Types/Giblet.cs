@@ -6,7 +6,7 @@ namespace Particles {
     /// <summary>
     /// These particles depict a meat chunk with blood dripping off.
     /// </summary>
-    class Giblet : TimedParticle {
+    /*class Giblet : TimedParticle {
         #region Constants
         private const float CO_DRAG = 0.05f, INERTIA_MULT = 0.25f, SPAWN_RADIUS = 1, SPEED_MIN = 0.25f, SPEED_MAX = 0.5f;
 
@@ -55,5 +55,5 @@ namespace Particles {
             }
         }
         #endregion
-    }
+    }*/
 }

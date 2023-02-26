@@ -159,20 +159,7 @@ namespace Hackathon {
                         RemainingMovement -= nextIncrement;
                         furthestPosition = nextStep;
                     }
-                }
-
-                if (hitSomething && performSecondaryCheck) {
-                    nextStep = ValidSecondaryMovement();
-
-                    //If we didn't move there's no need to keep checking.
-                    performSecondaryCheck = furthestPosition != nextStep;
-
-                    if (performSecondaryCheck) {
-                        //newHS = trialHS;
-                        RemainingMovement -= nextIncrement;
-                        furthestPosition = nextStep;
-                    }
-                }
+                }                
             }
         }
     }

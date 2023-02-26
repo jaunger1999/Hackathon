@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Particles {
-    class GibletEmitter : TimedParticleEmitter {
+    /*class GibletEmitter : TimedParticleEmitter {
         #region Constants
         private const int LIFESPAN = 0;
         #endregion
@@ -23,5 +23,5 @@ namespace Particles {
             throw new System.NotImplementedException();
         }
         #endregion
-    }
+    }*/
 }

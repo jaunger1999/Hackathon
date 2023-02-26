@@ -6,7 +6,7 @@ namespace Particles {
     /// <summary>
     /// These particles disappear after a timer.
     /// </summary>
-    class TimedParticle : FloatingParticle {
+    /*class TimedParticle : FloatingParticle {
         #region Constants
 
         #endregion
@@ -46,5 +46,5 @@ namespace Particles {
             return expirationTimer.Complete;
         }
         #endregion
-    }
+    }*/
 }

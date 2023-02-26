@@ -11,8 +11,8 @@ namespace Particles {
         #endregion
 
         #region Constructor & Initialization
-        public FadingParticle(Texture2D texture, Vector2 oldPos, Vector2 pos, Vector2 offset, float angle,
-            float fadeRate = 0.1f, float opacity = 1, float speed = 1, float coDrag = 0) : 
+        public FadingParticle(Texture2D texture, Vector2 oldPos, Vector2 pos, Vector2 velocity, float angle,
+            float fadeRate = 0.005f, float opacity = 1, float speed = 1, float coDrag = 0) : 
             base(texture, pos) {
             this.fadeRate = fadeRate;
             this.opacity = opacity;

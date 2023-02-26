@@ -8,11 +8,13 @@ namespace Particles {
     /// </summary>
     class FadingParticleEmitter : Emitter {
         #region Variables
-        private float coDrag, fadeMin, fadeMax, opacityMin, opacityMax, speedMin, speedMax;
+        private float coDrag = 0.1f, fadeMin = 5, fadeMax = 10, opacityMin = 0.5f, opacityMax = 1, speedMin = 30, speedMax = 50;
         #endregion
 
         #region Constructor & Initialization
-        
+        public FadingParticleEmitter(Texture2D tex, Vector2 pos, double spawnFreq, int min, int max) : base(tex, pos, spawnFreq, min,max) {
+
+        }
         #endregion
 
         #region Update
@@ -38,7 +40,7 @@ namespace Particles {
                 speed = Rand.NextFloat(speedMin, speedMax);
 
                 index = Rand.Next(Texture.Length);
-                AddParticle(new FadingParticle(Texture[index], OldPosition, Position, Offset(angle, distance), angle, fadeRate, opacity, speed, coDrag));
+                AddParticle(new FadingParticle(Texture[index], OldPosition, Position, new Vector2(100, 0), angle));
             }
         }
         #endregion

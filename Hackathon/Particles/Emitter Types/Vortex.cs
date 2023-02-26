@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Particles {
-    class Vortex : Emitter {
+    /*class Vortex : Emitter {
         #region Variables
         private float centerRadius, coDrag, g, opacityMin, opacityMax, speedMin, speedMax;
         #endregion
@@ -52,5 +52,5 @@ namespace Particles {
 
         #region Draw
         #endregion
-    }
+    }*/
 }

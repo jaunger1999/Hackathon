@@ -10,6 +10,7 @@ namespace Particles {
         #region Variables
         protected Sprite Sprite { get; private set; }
         protected Vector2 Position { get; private set; }
+        protected Vector2 Velocity { get; private set; }
         #endregion
 
         #region Constructor & Initialization

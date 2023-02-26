@@ -7,7 +7,7 @@ namespace Particles {
     /// <summary>
     /// These particles disappear after animating.
     /// </summary>
-    class AnimatedParticle : Particle {
+    /*class AnimatedParticle : Particle {
         #region Constants
         #endregion
 
@@ -53,5 +53,5 @@ namespace Particles {
             return animationFinished;
         }
         #endregion
-    }
+    }*/
 }
