@@ -61,6 +61,8 @@ namespace Hackathon {
             base.Update(gameTime);
         }
 
+        
+
         private void UpdatePosition(GameTime gameTime) {
             Movement m = NextMovement(gameTime);
             SetPosition(m.FurthestAvailablePosition());
